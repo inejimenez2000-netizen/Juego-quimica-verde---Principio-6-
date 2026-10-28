@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cacería de fugas energéticas | Principio 6</title>
+<style>
+:root{--green:#176b45;--mint:#e9f7ef;--dark:#15352a;--gold:#f3bd4f;--paper:#fff;--line:#d7e6dc;--muted:#60756a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#eaf7ef,#f7fbf8 55%,#fff7df);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--dark)}
+header{background:var(--green);color:#fff;padding:28px 18px;text-align:center}header .tag{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;opacity:.9}h1{margin:8px auto;font-size:clamp(1.7rem,4vw,2.6rem);max-width:900px}header p{margin:8px auto 0;max-width:760px;line-height:1.5}
+main{max-width:980px;margin:24px auto;padding:0 14px 48px}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:clamp(17px,3vw,28px);margin:16px 0;box-shadow:0 8px 25px #15352a0b}
+h2{margin:0 0 12px;color:var(--green)}h3{margin:0 0 8px}.small{font-size:.91rem;color:var(--muted);line-height:1.5}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.field label{display:block;font-weight:650;margin-bottom:6px}.field input,.field select,textarea,select{width:100%;padding:12px;border:1px solid #b9d2c3;border-radius:10px;font:inherit;background:white;color:var(--dark)}button{border:0;border-radius:12px;background:var(--green);color:#fff;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer}button:hover{filter:brightness(1.07)}button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:#eaf5ee;color:var(--green);border:1px solid #b9d2c3}.danger{color:#9b3527}.hidden{display:none!important}.barrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.timer{font-variant-numeric:tabular-nums;background:#fff4d5;border:1px solid #efd58e;padding:8px 13px;border-radius:12px;font-weight:800}.scenario{border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0;background:#fcfffd}.scenario p{margin:5px 0 12px;line-height:1.5}.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}.check{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);padding:11px;border-radius:10px;margin:7px 0}.check input{margin-top:5px;accent-color:var(--green)}.question{padding:15px 0;border-bottom:1px solid var(--line)}.question:last-child{border:0}.choice{display:flex;gap:9px;align-items:flex-start;padding:9px;border-radius:8px}.choice:hover{background:var(--mint)}.choice input{margin-top:5px;accent-color:var(--green)}.notice{background:#f0f8f2;border-left:4px solid var(--green);padding:12px 14px;border-radius:8px;line-height:1.5}.score{font-size:3rem;font-weight:900;color:var(--green);line-height:1.1}.pill{display:inline-block;background:var(--mint);padding:5px 10px;border-radius:99px;font-size:.85rem;font-weight:700}.footer{text-align:center;color:var(--muted);font-size:.85rem;padding:10px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+</style>
+</head>
+<body>
+<header><div class="tag">Ingeniería Industrial · Fundamentos de Química</div><h1>🔎 Cacería de fugas energéticas</h1><p>Principio 6 de la Química Verde: diseñar para la eficiencia energética. ¿Puedes detectar dónde se desperdicia energía en un sistema de aire comprimido?</p></header>
+<main>
+<section id="intro" class="card">
+ <span class="pill">Reto interactivo · 4 min 30 s</span>
+ <h2 style="margin-top:12px">Antes de comenzar</h2>
+ <p>El objetivo es gastar la menor energía posible para producir lo mismo. En una planta, el aire comprimido también consume electricidad: las fugas, la presión excesiva y la falta de medición generan desperdicio.</p>
+ <div class="notice"><b>Cómo funciona:</b> Parte 1 en equipo (2 min 30 s): relaciona cinco situaciones con sus soluciones y selecciona dos prioridades. Parte 2 individual (2 min): responde tres preguntas. La nota se calcula de 0 a 5.</div>
+ <p class="small">Esta versión funciona como archivo HTML en el navegador, sin permisos de Apps Script. Los resultados se guardan únicamente en este navegador/dispositivo y se pueden exportar como CSV para abrirlos en Excel. No se sincronizan automáticamente entre diferentes dispositivos.</p>
+ <div class="grid" style="margin-top:18px">
+  <div class="field"><label for="nombre">Nombre completo</label><input id="nombre" maxlength="100" autocomplete="name" placeholder="Escribe tu nombre"></div>
+  <div class="field"><label for="correo">Correo electrónico</label><input id="correo" type="email" maxlength="160" autocomplete="email" placeholder="nombre@correo.com"></div>
+  <div class="field"><label for="equipo">Equipo / grupo (opcional)</label><input id="equipo" maxlength="60" placeholder="Ej. Grupo 6"></div>
+ </div>
+ <div class="actions"><button id="startBtn" onclick="startGame()">Comenzar reto →</button></div><p id="startError" class="danger" role="alert"></p>
+</section>
+<section id="part1" class="card hidden">
+ <div class="barrow"><h2>Parte 1 · Diagnóstico de planta</h2><div class="timer" id="timer1">02:30</div></div>
+ <p class="small">Empareja cada situación con la solución más adecuada. Cada solución se usa una sola vez.</p>
+ <div id="scenarios"></div>
+ <h3 style="margin-top:20px">¿Qué dos acciones priorizarías primero?</h3>
+ <p class="small">Marca exactamente dos. Piensa en acciones prácticas para reducir el desperdicio energético.</p>
+ <div id="priorities"></div>
+ <label for="justificacion" style="display:block;font-weight:700;margin:16px 0 6px">Justifica tu elección en una o dos frases</label>
+ <textarea id="justificacion" rows="3" maxlength="500" placeholder="Explica por qué estas acciones ayudan a minimizar el consumo de energía..."></textarea>
+ <div class="actions"><button onclick="finishPart1()">Continuar a preguntas individuales →</button></div>
+ <p class="small">Al terminar el tiempo, la sección avanzará automáticamente.</p>
+</section>
+<section id="part2" class="card hidden">
+ <div class="barrow"><h2>Parte 2 · Comprobación individual</h2><div class="timer" id="timer2">02:00</div></div>
+ <p class="small">Selecciona una respuesta por pregunta. Cada respuesta correcta suma un punto en esta sección.</p>
+ <div id="quiz"></div>
+ <div class="actions"><button onclick="submitGame()">Finalizar y calcular nota</button></div>
+ <p class="small">Al terminar el tiempo, las respuestas actuales se entregarán automáticamente.</p>
+</section>
+<section id="result" class="card hidden">
+ <h2>¡Reto completado!</h2><p id="resultName"></p>
+ <div class="score" id="grade">—</div><p><b>Nota final sobre 5,0</b></p>
+ <div id="breakdown" class="notice"></div>
+ <p id="saveNotice" class="small"></p>
+ <div class="actions"><button onclick="downloadResults()">Descargar resultados CSV (Excel)</button><button class="secondary" onclick="downloadMyResult()">Descargar mi resultado CSV</button><button class="secondary" onclick="location.reload()">Volver al inicio</button></div>
+</section>
+<section class="card">
+ <h2>Administración de resultados</h2>
+ <p class="small">Este archivo usa almacenamiento local del navegador. Para consolidar los resultados, cada participante debe descargar el CSV y enviarlo al docente/organizador, o el organizador puede exportar los resultados guardados en el mismo navegador.</p>
+ <div class="actions"><button class="secondary" onclick="downloadResults()">Exportar todos los resultados de este navegador</button><button class="secondary" onclick="showCount()">Ver cantidad guardada</button></div>
+ <p id="countNotice" class="small" aria-live="polite"></p>
+</section>
+<div class="footer">Principio 6 de la Química Verde · Eficiencia energética · Grupo 6</div>
+</main>
+<script>
+const SOLUTIONS = [
+ {id:"1",label:"Medir la línea base",detail:"Registrar energía y caudal entregado (kWh/m³), presión y condiciones de operación."},
+ {id:"2",label:"Reparar fugas",detail:"Localizar fugas en uniones, acoples, conexiones rápidas y válvulas; bloquear y despresurizar antes de reparar."},
+ {id:"3",label:"Reducir la presión innecesaria",detail:"Ajustar la presión al mínimo que exige el equipo más demandante, validándolo en operación."},
+ {id:"4",label:"Evaluar demanda y control",detail:"Medir la demanda y revisar etapas, control maestro o reemplazo solo si los datos lo justifican."},
+ {id:"5",label:"Sostener el seguimiento",detail:"Revisar indicadores mensuales, repetir recorridos de fugas e involucrar a los operarios."}
+];
+const SCENARIOS = [
+ {id:"A",text:"Durante una inspección se escucha aire escapando de una conexión rápida y una válvula. El compresor sigue trabajando para compensar la pérdida.",answer:"2"},
+ {id:"B",text:"La planta no conoce bien la demanda real por turnos y varios compresores trabajan sin una estrategia coordinada.",answer:"4"},
+ {id:"C",text:"El equipo no tiene datos confiables de cuánta electricidad consume por cada volumen de aire que entrega.",answer:"1"},
+ {id:"D",text:"Después de aplicar mejoras, nadie revisa los indicadores ni vuelve a buscar nuevas fugas.",answer:"5"},
+ {id:"E",text:"La presión de descarga es mayor que la necesaria para que los equipos neumáticos funcionen correctamente.",answer:"3"}
+];
+const QUESTIONS = [
+ {id:"P1",text:"¿Qué expresa mejor el Principio 6 de la Química Verde?",choices:["Reconocer el impacto energético y minimizar la energía requerida por el proceso.","Aumentar la presión para asegurar que siempre llegue suficiente aire.","Cambiar todos los equipos sin medir su desempeño."],correct:0},
+ {id:"P2",text:"En un sistema de aire comprimido, ¿por qué conviene detectar y reparar fugas?",choices:["Porque las fugas mejoran la eficiencia al liberar presión.","Porque se consume electricidad para producir aire que no realiza trabajo útil.","Porque así se elimina la necesidad de medir el sistema."],correct:1},
+ {id:"P3",text:"¿Qué indicador ayuda a comparar la eficiencia del aire comprimido entregado?",choices:["El color de las tuberías.","El número de operarios por turno, sin otros datos.","La energía consumida por volumen de aire entregado (kWh/m³)."],correct:2}
+];
+let timerInterval=null,remaining=150,phase=1,startedAt=null,part1Deadline=null,part2Deadline=null,submitted=false,currentRecord=null;
+const $=id=>document.getElementById(id);
+function buildPart1(){
+ $("scenarios").innerHTML=SCENARIOS.map(s=>`<div class="scenario"><h3>Situación ${s.id}</h3><p>${s.text}</p><label for="ans${s.id}" class="small">Selecciona la solución:</label><select id="ans${s.id}"><option value="">— Elige una solución —</option>${SOLUTIONS.map(x=>`<option value="${x.id}">${x.id}. ${x.label}</option>`).join("")}</select></div>`).join("");
+ $("priorities").innerHTML=SOLUTIONS.map(x=>`<label class="check"><input type="checkbox" name="priority" value="${x.id}"><span><b>${x.label}</b><br><span class="small">${x.detail}</span></span></label>`).join("");
+ document.querySelectorAll('input[name="priority"]').forEach(el=>el.addEventListener('change',()=>{let c=[...document.querySelectorAll('input[name="priority"]:checked')];if(c.length>2)el.checked=false;}));
+}
+function buildQuiz(){
+ $("quiz").innerHTML=QUESTIONS.map(q=>`<div class="question"><h3>${q.id.replace("P","Pregunta ")}. ${q.text}</h3>${q.choices.map((c,i)=>`<label class="choice"><input type="radio" name="${q.id}" value="${i}"><span>${String.fromCharCode(65+i)}. ${c}</span></label>`).join("")}</div>`).join("");
+}
+function startGame(){
+ const name=$("nombre").value.trim(),email=$("correo").value.trim().toLowerCase();
+ $("startError").textContent="";
+ if(!name){$("startError").textContent="Escribe tu nombre para comenzar.";return;}
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$("startError").textContent="Escribe un correo electrónico válido.";return;}
+ const existing=JSON.parse(localStorage.getItem("p6_emails")||"[]");
+ if(existing.includes(email)){$("startError").textContent="Este correo ya tiene un intento guardado en este navegador. Si crees que es un error, contacta al organizador.";return;}
+ startedAt=new Date();$("intro").classList.add("hidden");$("part1").classList.remove("hidden");buildPart1();buildQuiz();phase=1;remaining=150;part1Deadline=Date.now()+150000;startTimer();
+}
+function startTimer(){clearInterval(timerInterval);timerInterval=setInterval(()=>{let deadline=phase===1?part1Deadline:part2Deadline;let secs=Math.max(0,Math.ceil((deadline-Date.now())/1000));let m=String(Math.floor(secs/60)).padStart(2,"0"),s=String(secs%60).padStart(2,"0");$(phase===1?"timer1":"timer2").textContent=`${m}:${s}`;if(secs<=0){clearInterval(timerInterval);if(phase===1)finishPart1(true);else submitGame(true);}},250);}
+function finishPart1(auto=false){if(phase!==1)return;clearInterval(timerInterval);phase=2;part2Deadline=Date.now()+120000;$("part1").classList.add("hidden");$("part2").classList.remove("hidden");startTimer();}
+function submitGame(auto=false){if(submitted)return;submitted=true;clearInterval(timerInterval);
+ const name=$("nombre").value.trim(),email=$("correo").value.trim().toLowerCase(),group=$("equipo").value.trim();
+ const answers={};let matching=0;
+ SCENARIOS.forEach(s=>{answers[s.id]=$("ans"+s.id)?.value||"";if(answers[s.id]===s.answer)matching++;});
+ const priorities=[...document.querySelectorAll('input[name="priority"]:checked')].map(x=>x.value);
+ const pAnswers={};let quizCorrect=0;
+ QUESTIONS.forEach(q=>{const checked=document.querySelector(`input[name="${q.id}"]:checked`);pAnswers[q.id]=checked?checked.value:"";if(checked&&Number(checked.value)===q.correct)quizCorrect++;});
+ // The quiz score is weighted: matching (5), priorities (1), individual questions (3), scaled to 5.
+ const priorityScore=priorities.length===2?priorities.filter(x=>["2","3"].includes(x)).length/2:0;
+ const raw=matching+priorityScore+quizCorrect;
+ const grade=Math.round((raw/9*5)*100)/100;
+ const duration=Math.max(0,Math.round((Date.now()-startedAt.getTime())/1000));
+ const record={fecha:new Date().toISOString(),nombre:name,correo:email,grupo:group,respuesta_A:answers.A,respuesta_B:answers.B,respuesta_C:answers.C,respuesta_D:answers.D,respuesta_E:answers.E,aciertos_parte1:matching,prioridades:priorities.join("; "),justificacion:$("justificacion").value.trim(),P1:pAnswers.P1,P2:pAnswers.P2,P3:pAnswers.P3,aciertos_parte2:quizCorrect,puntaje_sobre_9:raw,nota_sobre_5:grade,duracion_segundos:duration};
+ const rows=JSON.parse(localStorage.getItem("p6_results")||"[]");rows.push(record);localStorage.setItem("p6_results",JSON.stringify(rows));const emails=JSON.parse(localStorage.getItem("p6_emails")||"[]");emails.push(email);localStorage.setItem("p6_emails",JSON.stringify(emails));currentRecord=record;
+ $("part1").classList.add("hidden");$("part2").classList.add("hidden");$("result").classList.remove("hidden");$("resultName").textContent=`Resultado de ${name}`;$("grade").textContent=grade.toFixed(2).replace(".",",");$("breakdown").innerHTML=`<b>Parte 1:</b> ${matching}/5 emparejamientos correctos.<br><b>Parte 2:</b> ${quizCorrect}/3 respuestas correctas.<br><b>Prioridades:</b> ${priorities.length} seleccionadas. Se valora priorizar reparación de fugas y reducción de presión excesiva.<br><b>Tiempo:</b> ${Math.floor(duration/60)} min ${duration%60} s.`;$("saveNotice").textContent="Resultado guardado en el almacenamiento local de este navegador. Descarga el CSV para conservarlo o compartirlo.";
+}
+const HEADERS=["fecha","nombre","correo","grupo","respuesta_A","respuesta_B","respuesta_C","respuesta_D","respuesta_E","aciertos_parte1","prioridades","justificacion","P1","P2","P3","aciertos_parte2","puntaje_sobre_9","nota_sobre_5","duracion_segundos"];
+function csvEscape(v){return '"'+String(v??"").replace(/"/g,'""')+'"';}
+function downloadCSV(rows,filename){const content=[HEADERS.map(csvEscape).join(","),...rows.map(r=>HEADERS.map(h=>csvEscape(r[h])).join(","))].join("\r\n");const blob=new Blob(["\ufeff"+content],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
+function downloadResults(){const rows=JSON.parse(localStorage.getItem("p6_results")||"[]");if(!rows.length){alert("Todavía no hay resultados guardados en este navegador.");return;}downloadCSV(rows,"Resultados_Principio_6.csv");}
+function downloadMyResult(){if(!currentRecord){alert("Completa el reto primero para descargar tu resultado.");return;}downloadCSV([currentRecord],"Mi_resultado_Principio_6.csv");}
+function showCount(){const rows=JSON.parse(localStorage.getItem("p6_results")||"[]");$("countNotice").textContent=`Hay ${rows.length} resultado(s) guardado(s) en este navegador.`;}
+</script>
+</body></html>
